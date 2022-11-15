@@ -1,0 +1,24 @@
+{
+  "name": "3picosproject-api",
+  "version": "1.0.0",
+  "description": "This API is the Backend project that concerns to the blog that follows the adventures of 3 motorcycle lovers.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MariaJoaoP/3PicosProject-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MariaJoaoP/3PicosProject-API/issues"
+  },
+  "homepage": "https://github.com/MariaJoaoP/3PicosProject-API#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  }
+}
