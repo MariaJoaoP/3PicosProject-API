@@ -7,11 +7,22 @@ const connectDB = require('./config/database');
     connectDB();
 
 
+//Route files
+const trips = require('./routes/trips'); 
+
+
 const app = express();
 
     if( process.env.NODE_ENV === 'development' ){
         app.use(morgan('dev'));
     }
+
+
+app.use(express.json());
+
+
+//Mount routes
+app.use('/api/v1/trips', trips); 
 
 
 const PORT = process.env.PORT || 5000;
