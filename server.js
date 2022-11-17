@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/database');
     connectDB();
+const errorHandler = require('./middleware/errorHandler');
 
 
 //Route files
@@ -23,6 +24,9 @@ app.use(express.json());
 
 //Mount routes
 app.use('/api/v1/trips', trips); 
+
+
+app.use(errorHandler);
 
 
 const PORT = process.env.PORT || 5000;

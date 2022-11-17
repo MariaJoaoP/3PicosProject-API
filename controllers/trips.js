@@ -1,4 +1,5 @@
 const Trip = require('../models/Trip');
+const ErrorResponse = require('../utils/errorResponse');
 
 // @desc      Get all trips
 // @route     GET /api/v1/trips
@@ -9,7 +10,7 @@ exports.getTrips = async (req, res, next) => {
         const trips = await Trip.find();
         res.status(200).json( {success: true, data: trips} );
     } catch( err ){
-        res.status(400).json( {success: false, error: err.message} );
+        next( err );
     }
 };
 
@@ -22,11 +23,11 @@ exports.getTrip = async ( req, res, next ) => {
     try{
         const trip = await Trip.findById(req.params.id);
         if( !trip ){
-            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+            return next( new ErrorResponse(`Trip not found with id ${req.params.id}`, 404) );
         }
         res.status(200).json( {success: true, data: trip} );
     } catch( err ){
-        res.status(400).json( {success: false, error: err.message} );
+        next( err );
     }
 };
 
@@ -40,7 +41,7 @@ exports.createTrip = async (req, res, next) => {
         const trip = await Trip.create(req.body);
         res.status(201).json( {success: true, data: trip} );
     } catch( err ){
-        res.status(400).json( {success: false, error: err.message} );
+        next( err );
     }
 };
 
@@ -56,11 +57,11 @@ exports.updateTrip = async( req, res, next ) => {
             runValidators: true
         } );
         if( !trip ){
-            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+            return next( new ErrorResponse(`Trip not found with id ${req.params.id}`, 404) );
         }
         res.status(200).json( {success: true, data: trip} );
     } catch( err ){
-        res.status(400).json( {success: false, data: err.message} ); 
+        next( err );
     }
 };
 
@@ -73,10 +74,10 @@ exports.deleteTrip = async (req, res, next) => {
     try{
         const trip = await Trip.findByIdAndDelete(req.params.id);
         if( !trip ){
-            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+            return next( new ErrorResponse(`Trip not found with id ${req.params.id}`, 404) );
         }
         res.status(200).json( {success: true, data: trip} ); //retorna o elemento removido
     } catch( err ){
-        res.status(400).json( {success: false, error: err.message} );
+        next( err );
     }
 };
