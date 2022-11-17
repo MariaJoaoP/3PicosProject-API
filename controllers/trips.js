@@ -1,10 +1,16 @@
+const Trip = require('../models/Trip');
 
 // @desc      Get all trips
 // @route     GET /api/v1/trips
 // @access    Public
 
-exports.getTrips = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'Show all trips' });
+exports.getTrips = async (req, res, next) => {
+    try{
+        const trips = await Trip.find();
+        res.status(200).json( {success: true, data: trips} );
+    } catch( err ){
+        res.status(400).json( {success: false, error: err.message} );
+    }
 };
 
 
@@ -12,8 +18,16 @@ exports.getTrips = (req, res, next) => {
 // @route     GET /api/v1/trips/:id
 // @access    Public
 
-exports.getTrip = (req, res, next) => {
-    res.status(200).json({ success: true, msg: `Show trip ${req.params.id}` });
+exports.getTrip = async ( req, res, next ) => {
+    try{
+        const trip = await Trip.findById(req.params.id);
+        if( !trip ){
+            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+        }
+        res.status(200).json( {success: true, data: trip} );
+    } catch( err ){
+        res.status(400).json( {success: false, error: err.message} );
+    }
 };
 
 
@@ -21,9 +35,13 @@ exports.getTrip = (req, res, next) => {
 // @route     POST /api/v1/trips
 // @access    Private
 
-exports.createTrip = (req, res, next) => {
-    console.log(req.body); 
-    res.status(200).json({ success: true, msg: `Create new trip ${req.body.name}` });
+exports.createTrip = async (req, res, next) => {
+    try {
+        const trip = await Trip.create(req.body);
+        res.status(201).json( {success: true, data: trip} );
+    } catch( err ){
+        res.status(400).json( {success: false, error: err.message} );
+    }
 };
 
 
@@ -31,8 +49,19 @@ exports.createTrip = (req, res, next) => {
 // @route     PUT /api/v1/trips/:id
 // @access    Private
 
-exports.updateTrip = (req, res, next) => {
-    res.status(200).json({ success: true, msg: `Update trip ${req.params.id}` });
+exports.updateTrip = async( req, res, next ) => {
+    try{
+        const trip = await Trip.findByIdAndUpdate( req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        } );
+        if( !trip ){
+            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+        }
+        res.status(200).json( {success: true, data: trip} );
+    } catch( err ){
+        res.status(400).json( {success: false, data: err.message} ); 
+    }
 };
 
 
@@ -40,7 +69,14 @@ exports.updateTrip = (req, res, next) => {
 // @route     DELETE /api/v1/trips/:id
 // @access    Private
 
-exports.deleteTrip = (req, res, next) => {
-    res.status(200).json({ success: true, msg: `Delete trip ${req.params.id}` });
+exports.deleteTrip = async (req, res, next) => {
+    try{
+        const trip = await Trip.findByIdAndDelete(req.params.id);
+        if( !trip ){
+            return res.status(400).json( {success: false, error: `Trip not found with id ${req.params.id}`} );
+        }
+        res.status(200).json( {success: true, data: trip} ); //retorna o elemento removido
+    } catch( err ){
+        res.status(400).json( {success: false, error: err.message} );
+    }
 };
-
