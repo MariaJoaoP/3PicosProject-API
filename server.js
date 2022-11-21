@@ -11,6 +11,7 @@ const errorHandler = require('./middleware/errorHandler');
 //Route files
 const trips = require('./routes/trips'); 
 const gastronomy = require('./routes/gastronomy'); 
+const motorcycles = require('./routes/motorcycles'); 
 
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.json());
 //Mount routes
 app.use('/api/v1/trips', trips); 
 app.use('/api/v1/gastronomy', gastronomy); 
+app.use('/api/v1/motorcycles', motorcycles); 
 
 
 app.use(errorHandler);
