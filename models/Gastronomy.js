@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TripSchema = new mongoose.Schema({
+const GastronomySchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please add a name'],
@@ -52,4 +52,4 @@ const TripSchema = new mongoose.Schema({
   
 });
 
-module.exports = mongoose.model('Gastronomy', TripSchema);
+module.exports = mongoose.model('Gastronomy', GastronomySchema);
