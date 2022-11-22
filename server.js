@@ -6,6 +6,7 @@ const colors = require('colors');
 const connectDB = require('./config/database');
     connectDB();
 const errorHandler = require('./middleware/errorHandler');
+const cookieParser = require('cookie-parser');
 
 
 //Route files
@@ -14,6 +15,7 @@ const gastronomy = require('./routes/gastronomy');
 const motorcycles = require('./routes/motorcycles'); 
 const categories = require('./routes/categories'); 
 const products = require('./routes/products'); 
+const auth = require('./routes/auth'); 
 
 
 const app = express();
@@ -24,6 +26,7 @@ const app = express();
 
 
 app.use(express.json());
+app.use(cookieParser());
 
 
 //Mount routes
@@ -32,6 +35,7 @@ app.use('/api/v1/gastronomy', gastronomy);
 app.use('/api/v1/motorcycles', motorcycles); 
 app.use('/api/v1/categories', categories); 
 app.use('/api/v1/products', products); 
+app.use('/api/v1/auth', auth); 
 
 
 app.use(errorHandler);
