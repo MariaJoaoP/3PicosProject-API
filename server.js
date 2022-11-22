@@ -13,6 +13,7 @@ const trips = require('./routes/trips');
 const gastronomy = require('./routes/gastronomy'); 
 const motorcycles = require('./routes/motorcycles'); 
 const categories = require('./routes/categories'); 
+const products = require('./routes/products'); 
 
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/v1/trips', trips);
 app.use('/api/v1/gastronomy', gastronomy); 
 app.use('/api/v1/motorcycles', motorcycles); 
 app.use('/api/v1/categories', categories); 
+app.use('/api/v1/products', products); 
 
 
 app.use(errorHandler);
