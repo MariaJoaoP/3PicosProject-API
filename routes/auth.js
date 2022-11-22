@@ -6,7 +6,8 @@ const {
     createUser,
     updateUser,
     deleteUser,
-    login
+    login,
+    logout
 } = require('../controllers/auth');
 
 
@@ -26,6 +27,10 @@ router.route('/users/:id')
     
 router
     .post('/login', login);
+
+
+router
+    .get('/logout', logout);
 
 
 module.exports = router;
