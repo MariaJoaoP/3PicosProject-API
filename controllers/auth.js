@@ -83,7 +83,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 
 // @desc      Create new user
 // @route     POST /api/v1/auth/users
-// @access    Private
+// @access    Public
 
 exports.createUser = asyncHandler( async( req, res, next ) => {
   const user = await User.create(req.body);

@@ -11,18 +11,21 @@ const {
 } = require('../controllers/auth');
 
 
+const { protect } = require('../middleware/auth');
+
+
 const router = express.Router();
 
 
 router.route('/users')
-    .get(getUsers)
+    .get(protect, getUsers)
     .post(createUser);
 
 
 router.route('/users/:id')
-    .get(getUser)
-    .put(updateUser)
-    .delete(deleteUser);
+    .get(protect, getUser)
+    .put(protect, updateUser)
+    .delete(protect, deleteUser);
 
     
 router
@@ -30,7 +33,7 @@ router
 
 
 router
-    .get('/logout', logout);
+    .get('/logout', protect, logout);
 
 
 module.exports = router;

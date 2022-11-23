@@ -9,17 +9,20 @@ const {
 } = require('../controllers/motorcycles');
 
 
+const { protect } = require('../middleware/auth');
+
+
 const router = express.Router();
 
 
 router.route('/')
     .get(getMotorcycles)
-    .post(createMotorcycle);
+    .post(protect, createMotorcycle);
 
 router.route('/:id')
     .get(getMotorcycle)
-    .put(updateMotorcycle)
-    .delete(deleteMotorcycle)
+    .put(protect, updateMotorcycle)
+    .delete(protect, deleteMotorcycle)
 
 
 module.exports = router;
