@@ -7,7 +7,8 @@ const {
     updateUser,
     deleteUser,
     login,
-    logout
+    logout,
+    getMe
 } = require('../controllers/auth');
 
 
@@ -34,6 +35,10 @@ router
 
 router
     .get('/logout', protect, logout);
+
+
+router
+    .get('/me', protect, getMe);
 
 
 module.exports = router;
