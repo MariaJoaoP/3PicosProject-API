@@ -9,7 +9,7 @@ const {
 } = require('../controllers/motorcycles');
 
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 
 const router = express.Router();
@@ -17,12 +17,12 @@ const router = express.Router();
 
 router.route('/')
     .get(getMotorcycles)
-    .post(protect, createMotorcycle);
+    .post(protect, authorize('admin'), createMotorcycle);
 
 router.route('/:id')
     .get(getMotorcycle)
-    .put(protect, updateMotorcycle)
-    .delete(protect, deleteMotorcycle)
+    .put(protect, authorize('admin'), updateMotorcycle)
+    .delete(protect, authorize('admin'), deleteMotorcycle);
 
 
 module.exports = router;

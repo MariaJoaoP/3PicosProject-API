@@ -9,7 +9,7 @@ const {
 } = require('../controllers/gastronomy');
 
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 
 const router = express.Router();
@@ -17,12 +17,12 @@ const router = express.Router();
 
 router.route('/')
     .get(getGastronomies)
-    .post(protect, createGastronomy);
+    .post(protect, authorize('admin'), createGastronomy);
 
 router.route('/:id')
     .get(getGastronomy)
-    .put(protect, updateGastronomy)
-    .delete(protect, deleteGastronomy)
+    .put(protect, authorize('admin'), updateGastronomy)
+    .delete(protect, authorize('admin'), deleteGastronomy);
 
 
 module.exports = router;

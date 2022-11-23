@@ -9,7 +9,7 @@ const {
 } = require('../controllers/trips');
 
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 
 const router = express.Router();
@@ -17,12 +17,12 @@ const router = express.Router();
 
 router.route('/')
     .get(getTrips)
-    .post(protect, createTrip);
+    .post(protect, authorize('admin'), createTrip);
 
 router.route('/:id')
     .get(getTrip)
-    .put(protect, updateTrip)
-    .delete(protect, deleteTrip)
+    .put(protect, authorize('admin'), updateTrip)
+    .delete(protect, authorize('admin'), deleteTrip);
 
 
 module.exports = router;

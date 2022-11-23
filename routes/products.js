@@ -9,7 +9,7 @@ const {
 } = require('../controllers/products');
 
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 
 const router = express.Router();
@@ -17,12 +17,12 @@ const router = express.Router();
 
 router.route('/')
     .get(getProducts)
-    .post(protect, createProduct);
+    .post(protect, authorize('admin'), createProduct);
 
 router.route('/:id')
     .get(getProduct)
-    .put(protect, updateProduct)
-    .delete(protect, deleteProduct); 
+    .put(protect, authorize('admin'), updateProduct)
+    .delete(protect, authorize('admin'), deleteProduct); 
 
 
 module.exports = router;
