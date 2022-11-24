@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
-
+const User = require('../models/User');
 
 // @desc      Get all products
 // @route     GET /api/v1/products
@@ -145,9 +145,21 @@ exports.deleteProduct = asyncHandler( async( req, res, next ) => {
 
 exports.createProductReview = asyncHandler( async( req, res, next ) => {
 
+  const { review, rating } = req.body;
+  const user = await User.findById(req.user.id);
+  // console.log("user", user);
+  const userId = user.id;
+  const userReview = {
+    "user": userId,
+    "review": review,
+    "rating": rating
+  };
+  // console.log("user review", userReview);
+
   const oldReviews = await Product.findById(req.params.id).select("reviews");
   const reviews = oldReviews.reviews;
-  reviews.push(req.body);
+  reviews.push(userReview);
+  // reviews.unshift(userReview);
   // console.log(reviews);
   const newReviews = {reviews: reviews};
   // console.log(newReviews);
