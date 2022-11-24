@@ -41,8 +41,33 @@ const ProductSchema = new mongoose.Schema({
     },
     images: {
         type: [String],
-        maxlength: [30, 'Image name can not be more than 30 characters']
+        maxlength: [30, 'Image name can not be more than 30 characters'],
     },
+    reviews: [
+        {
+            user: { 
+                type: mongoose.Schema.ObjectId,
+                ref: 'User', 
+                required: true
+            },
+            review: {
+                type: String,
+                maxlength: [500, 'Review can not be more than 500 characters']
+            },
+            rating: {
+                type: Number,
+                // option with value between an interval
+                // min: [1, 'Rating must be at least 1'],
+                // max: [5, 'Rating must can not be more than 5']
+                // option with specific values
+                enum: [ 1, 2, 3, 4, 5 ]
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now

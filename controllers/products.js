@@ -18,12 +18,19 @@ exports.getProducts = asyncHandler ( async (req, res, next) => {
     query = Product.find(JSON.parse(queryStr)).populate({
       path: 'category',
       select: 'name'
+    }).populate({
+      path: 'reviews',
+      populate: {
+        path: 'user',
+        model: "User",
+        select: "name city"
+      }
     });
     
     // Select Fields
     if (req.query.select) {
       const fields = req.query.select.split(',').join(' '); 
-      console.log(fields);
+      // console.log(fields);
       query = query.select(fields);
     }
     // Sort 
@@ -77,6 +84,13 @@ exports.getProduct = asyncHandler( async( req, res, next ) => {
     const product = await Product.findById(req.params.id).populate({
       path: 'category',
       select: 'name'
+    }).populate({
+      path: 'reviews',
+      populate: {
+        path: 'user',
+        model: "User",
+        select: "name city"
+      }
     });
 
     if( !product ){
@@ -124,3 +138,27 @@ exports.deleteProduct = asyncHandler( async( req, res, next ) => {
         res.status(200).json( {success: true, data: product} );
 } );
 
+
+// @desc      Create new product review
+// @route     POST /api/v1/products/:id/reviews
+// @access    Private
+
+exports.createProductReview = asyncHandler( async( req, res, next ) => {
+
+  const oldReviews = await Product.findById(req.params.id).select("reviews");
+  const reviews = oldReviews.reviews;
+  reviews.push(req.body);
+  // console.log(reviews);
+  const newReviews = {reviews: reviews};
+  // console.log(newReviews);
+  
+  const product = await Product.findByIdAndUpdate( req.params.id, newReviews, {
+      new: true,
+      runValidators: true
+  } );
+  if( !product ){
+      return next( new ErrorResponse(`Product not found with id ${req.params.id}`, 404) );
+  }
+  
+  res.status(200).json( {success: true, data: reviews} );
+} );
