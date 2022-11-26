@@ -104,10 +104,11 @@ exports.updateCategory = asyncHandler( async( req, res, next ) => {
 // @route     DELETE /api/v1/categories/:id
 // @access    Private
 exports.deleteCategory = asyncHandler( async( req, res, next ) => {
-    const category = await Category.findByIdAndDelete(req.params.id);
-        if( !category ){
-            return next( new ErrorResponse(`Category not found with id ${req.params.id}`, 404) );
-        }
-        res.status(200).json( {success: true, data: category} );
+    const category = await Category.findById(req.params.id);
+    if( !category ){
+        return next( new ErrorResponse(`Category not found with id ${req.params.id}`, 404) );
+    }
+    category.remove(); //Cascade delete 
+    res.status(200).json( {success: true, data: category} );
 } );
 
