@@ -166,6 +166,9 @@ exports.createProductReview = asyncHandler( async( req, res, next ) => {
   };
 
   const oldReviews = await Product.findById(req.params.id).select("reviews");
+    if( !oldReviews ){
+      return next( new ErrorResponse(`Product not found with id ${req.params.id}`, 404) );
+    }
   const reviews = oldReviews.reviews;
   reviews.push(userReview);
   // reviews.unshift(userReview);
@@ -176,9 +179,6 @@ exports.createProductReview = asyncHandler( async( req, res, next ) => {
       new: true,
       runValidators: true
   } );
-  if( !product ){
-      return next( new ErrorResponse(`Product not found with id ${req.params.id}`, 404) );
-  }
   
   res.status(200).json( {success: true, data: reviews} );
 } );
