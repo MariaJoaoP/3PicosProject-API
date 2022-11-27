@@ -50,6 +50,16 @@ const ProductSchema = new mongoose.Schema({
                 ref: 'User', 
                 required: true
             },
+            name: { 
+                type: String,
+                maxlength: [500, 'Review can not be more than 500 characters'],
+                required: true
+            },
+            city: { 
+                type: String,
+                maxlength: [500, 'Review can not be more than 500 characters'],
+                required: true
+            },
             review: {
                 type: String,
                 maxlength: [500, 'Review can not be more than 500 characters']
@@ -72,6 +82,7 @@ const ProductSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+  
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
