@@ -10,6 +10,7 @@ const ProductSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Please add a description'],
+        trim: true,
         maxlength: [500, 'Description can not be more than 500 characters']
     },
     category: { 
@@ -19,6 +20,7 @@ const ProductSchema = new mongoose.Schema({
     },
     unit: {
         type: String,
+        trim: true,
         required: [true, 'Please add a unit type'],
         maxlength: [10, 'Unit can not be more than 10 characters'] 
     },
@@ -37,6 +39,7 @@ const ProductSchema = new mongoose.Schema({
     }, 
     dimensions: {
         type: String,
+        trim: true,
         maxlength: [30, 'Dimensions name can not be more than 30 characters']
     },
     images: {
@@ -62,7 +65,8 @@ const ProductSchema = new mongoose.Schema({
             },
             review: {
                 type: String,
-                maxlength: [500, 'Review can not be more than 500 characters']
+                trim: true,
+                maxlength: [500, 'Review can not be more than 500 characters'],
             },
             rating: {
                 type: Number,

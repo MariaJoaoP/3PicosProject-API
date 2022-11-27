@@ -15,6 +15,7 @@ const MotorcycleSchema = new mongoose.Schema({
     },
     info: {
         type: String,
+        trim: true,
         required: [true, 'Please add the information']
     },
     images: [{ 
@@ -28,6 +29,7 @@ const MotorcycleSchema = new mongoose.Schema({
         imgDescription: {
             type: String,
             required: [true, 'Please add a description for the image'],
+            trim: true,
             maxlength: [200, 'Description can not be more than 200 characters']
         }
     }],

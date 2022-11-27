@@ -10,14 +10,17 @@ const TripSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        trim: true,
         required: [true, 'Please add a description']
     },
     city: {
         type: String,
+        trim: true,
         required: [true, 'Please add a city']
     },
     country: {
         type: String,
+        trim: true,
         required: [true, 'Please add a country']
     },
     tripDate: {
@@ -35,6 +38,7 @@ const TripSchema = new mongoose.Schema({
         imgDescription: {
             type: String,
             required: [true, 'Please add a description for the image'],
+            trim: true,
             maxlength: [500, 'Description can not be more than 500 characters']
         }
     }],

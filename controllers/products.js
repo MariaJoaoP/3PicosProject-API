@@ -152,6 +152,25 @@ exports.deleteProduct = asyncHandler( async( req, res, next ) => {
 exports.createProductReview = asyncHandler( async( req, res, next ) => {
 
   const { review, rating } = req.body;
+    if (!review && !rating) {
+      return next(new ErrorResponse('Please provide a review and/or a rating', 400));
+    }
+    // Prevent inserting an empty review
+    if (review) {
+      // console.log(review);
+      // console.log(review.trim().length);
+      const reviewLength = review.trim().length;
+      if (reviewLength == 0) {
+        return next(new ErrorResponse('Please provide a content for the review', 400));
+      }
+    }
+    // Prevent inserting a review if the given rating is not valid as invalid types were causing to insert new reviews wihtout the field rating
+    if (rating) {
+      if (rating != 1 && rating != 2 && rating != 3 && rating != 4 && rating != 5) {
+        return next(new ErrorResponse('Please provide a valid rating: 1, 2, 3, 4 or 5', 400));
+      }
+    }
+  
   const user = await User.findById(req.user.id);
   // console.log("user", user);
   const userId = user.id;
@@ -180,7 +199,7 @@ exports.createProductReview = asyncHandler( async( req, res, next ) => {
       runValidators: true
   } );
   
-  res.status(200).json( {success: true, data: reviews} );
+  res.status(200).json( {success: true, data: product} );
 } );
 
 
@@ -233,15 +252,24 @@ exports.updateProductReview = asyncHandler( async( req, res, next ) => {
     return next( new ErrorResponse(`Must insert an updated review and/or an updated rating to update the product review`, 400) );
   }
   if( review ) {
+    const reviewLength = review.trim().length;
+      if (reviewLength == 0) {
+        return next(new ErrorResponse('Please provide a content for the review', 400));
+      }
     const updatedReview = {$set: {"reviews.$.review": review}};
     const updRev = await Product.findOneAndUpdate( filter , updatedReview, {
-      new: true
+      new: true,
+      runValidators: true
     });
   }
   if( rating ) {
+    if (rating != 1 && rating != 2 && rating != 3 && rating != 4 && rating != 5) {
+      return next(new ErrorResponse('Please provide a valid rating: 1, 2, 3, 4 or 5', 400));
+    }
     const updatedRating = {$set: {"reviews.$.rating": rating}};
     const updRat = await Product.findOneAndUpdate( filter , updatedRating, {
-      new: true
+      new: true,
+      runValidators: true
     });
   }
 
